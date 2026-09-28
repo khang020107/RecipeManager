@@ -149,6 +149,47 @@ public sealed class RecipeManagerTests
         Assert.False(manager.RemoveRecipe(100));
         Assert.Equal(2,manager.RecipeCount);
     }
+
+    // AddIngredient to shoppinglist tests
+    [Fact]
+    public void AddIngredientsToShoppingList_ExistingRecipe_AddsIngredients()
+    {
+        var manager = CreateManager();
+        var addedCount = manager.AddIngredientsToShoppingList(10);
+        Assert.Equal(1, addedCount);
+        Assert.Equal(1, manager.ShoppingItemCount);
+        //Assert.Equal(["1 apple"], manager.GetShoppingList());
+    }
+
+    [Fact]
+    public void AddIngredientsToShoppingList_MissingRecipe_ReturnsZero()
+    {
+        var manager = CreateManager();
+        var addedCount = manager.AddIngredientsToShoppingList(999);
+        Assert.Equal(0, addedCount);
+        Assert.Equal(0, manager.ShoppingItemCount);
+        //Assert.Empty(manager.GetShoppingList());
+    }
+
+    [Fact]
+    public void AddIngredientsToShoppingList_RecipeWithoutIngredients_ReturnsZero()
+    {
+        var manager = CreateManager();
+        var addedCount = manager.AddIngredientsToShoppingList(20);
+        Assert.Equal(0, addedCount);
+        Assert.Equal(0, manager.ShoppingItemCount);
+        //Assert.Empty(manager.GetShoppingList());
+    }
+
+    [Fact]
+    public void AddIngredientsToShoppingList_CalledTwice_AddsIngredientsTwice()
+    {
+        var manager = CreateManager();
+        manager.AddIngredientsToShoppingList(10);
+        manager.AddIngredientsToShoppingList(10);
+        Assert.Equal(2, manager.ShoppingItemCount);
+        Assert.Equal(new[] { "1 apple", "1 apple" },manager.GetShoppingList());
+    }
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]
