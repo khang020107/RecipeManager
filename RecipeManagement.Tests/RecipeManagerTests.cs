@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Reflection;
+using Microsoft.VisualBasic;
 using RecipeManagement.Core;
 
 namespace RecipeManagement.Tests;
@@ -259,6 +261,27 @@ public sealed class RecipeManagerTests
         Assert.False(result);
         Assert.Equal(0,manager.CookingPlanCount);
         Assert.Equal(0,manager.RemovedRecipeCount);
+    }
+
+    //PeekLastRemoveRecipe tests
+    [Fact]
+    public void PeekLastRemovedRecipe_EmptyHistory_ReturnsNull()
+    {
+        var manager = CreateManager();
+        Assert.Null(manager.PeekLastRemovedRecipe());
+    }
+
+    [Fact]
+    public void PeekLastRemovedRecipe_ReturnsMostRecentlyRemovedRecipe()
+    {
+        var manager = CreateManager();
+        manager.AddRecipeToCookingPlan(10);
+        manager.AddRecipeToCookingPlan(20);
+        manager.RemoveRecipeFromCookingPlan(10);
+        manager.RemoveRecipeFromCookingPlan(20);
+        Assert.Equal(20,manager.PeekLastRemovedRecipe());
+        Assert.Equal(2,manager.RemovedRecipeCount);
+
     }
     private static RecipeManager CreateManager()
     {

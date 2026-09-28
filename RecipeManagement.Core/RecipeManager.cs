@@ -87,14 +87,15 @@ public sealed class RecipeManager : IRecipeManager
         _removedRecipeHistory.Push(recipeId);
         return true;
     }
-
-
+  
     public bool RestoreLastRemovedRecipe() =>
         throw new NotImplementedException("Part A: implement RestoreLastRemovedRecipe.");
 
-    public int? PeekLastRemovedRecipe() =>
-        throw new NotImplementedException("Part A: implement PeekLastRemovedRecipe.");
-
+    public int? PeekLastRemovedRecipe()
+    {
+        if(_removedRecipeHistory.Count == 0) return null;
+        return _removedRecipeHistory.Peek(); 
+    }
     public IReadOnlyList<int> GetCookingPlan() =>
         throw new NotImplementedException("Part A: implement GetCookingPlan.");
 
