@@ -209,6 +209,36 @@ public sealed class RecipeManagerTests
         Assert.Empty(manager.GetShoppingList());
         Assert.Equal(0,manager.ShoppingItemCount);
     }
+
+    // AddRecipeToCookingPlan items
+    [Fact]
+
+    public void AddRecipeToCookingPlan_ExistingRecipe_AddsRecipe()
+    {
+        var manager = CreateManager();
+        var result = manager.AddRecipeToCookingPlan(10);
+        Assert.True(result);
+        Assert.Equal(1,manager.CookingPlanCount);
+    }
+
+    [Fact]
+    public void AddRecipeToCookingPlan_MissingRecipe_ReturnsFalse()
+    {
+        var manager = CreateManager();
+        var result = manager.AddRecipeToCookingPlan(9991);
+        Assert.False(result);
+        Assert.Equal(0,manager.CookingPlanCount);
+    }
+
+    [Fact]
+    public void AddRecipeToCookingPlan_DuplicateRecipe_ReturnsFalse()
+    {
+        var manager = CreateManager();
+        Assert.True(manager.AddRecipeToCookingPlan(10));
+        var result = manager.AddRecipeToCookingPlan(10);
+        Assert.False(result);
+        Assert.Equal(1,manager.CookingPlanCount);
+    }
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]

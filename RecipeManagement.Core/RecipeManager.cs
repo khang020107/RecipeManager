@@ -73,8 +73,13 @@ public sealed class RecipeManager : IRecipeManager
     {
         _shoppingList.Clear();
     }
-    public bool AddRecipeToCookingPlan(int recipeId) =>
-        throw new NotImplementedException("Part A: implement AddRecipeToCookingPlan.");
+    public bool AddRecipeToCookingPlan(int recipeId)
+    {
+        if(FindRecipe(recipeId) == null) return false;
+        if(_cookingPlan.Contains(recipeId)) return false;
+        _cookingPlan.AddLast(recipeId);
+        return true;
+    }
 
     public bool RemoveRecipeFromCookingPlan(int recipeId) =>
         throw new NotImplementedException("Part A: implement RemoveRecipeFromCookingPlan.");
