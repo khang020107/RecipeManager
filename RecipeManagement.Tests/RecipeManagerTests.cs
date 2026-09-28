@@ -131,6 +131,24 @@ public sealed class RecipeManagerTests
         var manager = CreateManager();
         Assert.Throws<ArgumentNullException>(() => manager.AddRecipe(null!));
     }
+
+    // RemoveRecipe tests
+    [Fact]
+    public void RemoveRecipe_ExistingId_ReturnsTrueAndDecreasesCount()
+    {
+        var manager = CreateManager();
+        Assert.True(manager.RemoveRecipe(10));
+        Assert.Equal(1,manager.RecipeCount);
+        Assert.Null(manager.FindRecipe(10));
+    }
+
+    [Fact]
+    public void RemoveRecipe_MissingId_ReturnsFalseAndCountUnchanged()
+    {
+        var manager = CreateManager();
+        Assert.False(manager.RemoveRecipe(100));
+        Assert.Equal(2,manager.RecipeCount);
+    }
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]
