@@ -190,6 +190,25 @@ public sealed class RecipeManagerTests
         Assert.Equal(2, manager.ShoppingItemCount);
         Assert.Equal(new[] { "1 apple", "1 apple" },manager.GetShoppingList());
     }
+    // GetShoppingList and ClearShoppingList tests
+    [Fact]
+    public void GetShoppingList_ReturnsIngredientsInListOrder()
+    {
+        var manager = CreateManager();
+        manager.AddIngredientsToShoppingList(10);
+        Assert.Equal(["1 apple"], manager.GetShoppingList());
+    }
+    
+    [Fact]
+    public void ClearShoppingList_RemoveAllItems()
+    {
+        var manager = CreateManager();
+        manager.AddIngredientsToShoppingList(10);
+        manager.AddIngredientsToShoppingList(10);
+        manager.ClearShoppingList();
+        Assert.Empty(manager.GetShoppingList());
+        Assert.Equal(0,manager.ShoppingItemCount);
+    }
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]

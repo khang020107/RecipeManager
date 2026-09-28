@@ -65,12 +65,14 @@ public sealed class RecipeManager : IRecipeManager
         return recipe.Ingredients.Count;   
     }
 
-    public IReadOnlyList<string> GetShoppingList() =>
-        throw new NotImplementedException("Part A: implement GetShoppingList.");
-
-    public void ClearShoppingList() =>
-        throw new NotImplementedException("Part A: implement ClearShoppingList.");
-
+    public IReadOnlyList<string> GetShoppingList()
+    {
+        return _shoppingList.AsReadOnly(); // AsReadOnly() return read-only wrapper around a collection
+    }
+    public void ClearShoppingList()
+    {
+        _shoppingList.Clear();
+    }
     public bool AddRecipeToCookingPlan(int recipeId) =>
         throw new NotImplementedException("Part A: implement AddRecipeToCookingPlan.");
 
