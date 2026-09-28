@@ -48,24 +48,24 @@ public sealed class RecipeManagerTests
     [Fact]
     public void Constructor_RecipesIdLowerThan0_ThrowsArgumentException()
     {
-        var Recipe1 = new Recipe{Id = -1, Title = "Pancakes"};
-        Assert.Throws<ArgumentException>(() => new RecipeManager([Recipe1]));
+        var recipe1 = new Recipe{Id = -1, Title = "Pancakes"};
+        Assert.Throws<ArgumentException>(() => new RecipeManager([recipe1]));
     }
 
     [Fact]
     public void Constructor_EmptyRecipeTitle_ThrowsArgumentException()
     {
-        var Recipe1 = new Recipe{Id = 34, Title = " "};
-        Assert.Throws<ArgumentException>(() => new RecipeManager([Recipe1]));
+        var recipe1 = new Recipe{Id = 34, Title = " "};
+        Assert.Throws<ArgumentException>(() => new RecipeManager([recipe1]));
     }
 
     [Fact]
     public void Constructor_DuplicateId_ThrowsArgumentException()
     {
-        var Recipe1 = new Recipe{Id = 34, Title = "Pancakes"};
-        var Recipe2 = new Recipe{Id = 34, Title = "Job"};
+        var recipe1 = new Recipe{Id = 34, Title = "Pancakes"};
+        var recipe2 = new Recipe{Id = 34, Title = "Job"};
 
-        Assert.Throws<ArgumentException>(() => new RecipeManager([Recipe1,Recipe2]));
+        Assert.Throws<ArgumentException>(() => new RecipeManager([recipe1,recipe2]));
     }
 
     [Fact]
@@ -82,6 +82,27 @@ public sealed class RecipeManagerTests
     {
         var manager = CreateManager();
         Assert.Null(manager.FindRecipe(999));
+    }
+    
+    [Fact]
+    public void AddRecipe_ValidRecipe_ReturnsTrueAndIncreasesCount()
+    {
+        var recipe1 = new Recipe{Id = 34, Title = "Pancakes"};
+        var manager = CreateManager();
+        Assert.True(manager.AddRecipe(recipe1));
+        Assert.Equal(3,manager.RecipeCount);
+        Assert.Same(recipe1,manager.FindRecipe(34));
+    }
+
+    [Fact]
+    public void AddRecipe_DuplicateId_ReturnsFalseAndCountUnchanged()
+    {
+        var recipe1 = new Recipe{Id = 10, Title = "Pancakes"};
+        var manager = CreateManager();
+        Assert.False(manager.AddRecipe(recipe1));
+        Assert.Equal(2,manager.RecipeCount);
+        var correct = manager.FindRecipe(10);
+        Assert.Equal("Recipe A",correct?.Title);
     }
     private static RecipeManager CreateManager()
     {
