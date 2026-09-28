@@ -68,7 +68,19 @@ public sealed class RecipeManagerTests
         Assert.Throws<ArgumentException>(() => new RecipeManager([Recipe1,Recipe2]));
     }
 
+    [Fact]
+    public void FindRecipe_ExistingId_ReturnsRecipe()
+    {
+        var manager = CreateManager();
+        Assert.NotNull(manager.FindRecipe(10));
+    }
 
+    [Fact]
+    public void FindRecipe_MissingId_ReturnsNull()
+    {
+        var manager = CreateManager();
+        Assert.Null(manager.FindRecipe(999));
+    }
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]
