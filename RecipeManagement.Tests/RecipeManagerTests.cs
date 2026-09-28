@@ -72,8 +72,9 @@ public sealed class RecipeManagerTests
     public void FindRecipe_ExistingId_ReturnsRecipe()
     {
         var manager = CreateManager();
-        Assert.NotNull(manager.FindRecipe(10));
-        Assert.Equal("Recipe A", manager.FindRecipe(10)?.Title);
+        var recipe = manager.FindRecipe(10);
+        Assert.NotNull(recipe);
+        Assert.Equal("Recipe A", recipe.Title);
     }
 
     [Fact]
