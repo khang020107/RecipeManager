@@ -11,18 +11,29 @@ namespace RecipeManagement.Core;
 public sealed class RecipeManager : IRecipeManager
 {
     // TODO Part A: add your private collection fields here.
-
+    private readonly Dictionary<int,Recipe> _recipes = new();
+    private readonly List<string> _shoppingList= new();
+    private readonly LinkedList<int> _cookingPlan = new();
+    private readonly Stack<int> _removedRecipeHistory = new();
+    private readonly Queue<string> _instructionQueue = new();
     public RecipeManager(IEnumerable<Recipe> recipes)
     {
-        // TODO Part A: validate recipes and build Dictionary<int, Recipe>.
-        _ = recipes;
+        if (recipes == null) throw new ArgumentNullException(nameof(recipes));
+        foreach(Recipe recipe in recipes)
+        {
+            if (recipe == null) throw new ArgumentNullException(nameof(recipe));
+            if (recipe.Id <= 0) throw new ArgumentException($"Your recipe id {recipe.Id} is lower or equal to 0.");
+            if (string.IsNullOrWhiteSpace(recipe.Title)) throw new ArgumentException("Your recipe title is currently null");
+            if (_recipes.ContainsKey(recipe.Id)) throw new ArgumentException($"Duplicate recipe ID found: {recipe.Id}");
+            _recipes.Add(recipe.Id,recipe);
+        }
     }
 
-    public int RecipeCount => 0;
-    public int ShoppingItemCount => 0;
-    public int CookingPlanCount => 0;
-    public int PendingInstructionCount => 0;
-    public int RemovedRecipeCount => 0;
+    public int RecipeCount => _recipes.Count;
+    public int ShoppingItemCount => _shoppingList.Count;
+    public int CookingPlanCount => _cookingPlan.Count;
+    public int PendingInstructionCount => _instructionQueue.Count;
+    public int RemovedRecipeCount => _removedRecipeHistory.Count;
 
     public bool AddRecipe(Recipe recipe) =>
         throw new NotImplementedException("Part A: implement AddRecipe.");
