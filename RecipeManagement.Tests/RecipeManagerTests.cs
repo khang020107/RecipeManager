@@ -38,7 +38,7 @@ public sealed class RecipeManagerTests
         Assert.True(manager.RestoreLastRemovedRecipe());
         Assert.Equal(new[] { 20 }, manager.GetCookingPlan());
     }
-
+    // Constuctor Tests
     [Fact]
     public void Constructor_NullRecipes_ThrowsArgumentNullException()
     {
@@ -68,6 +68,7 @@ public sealed class RecipeManagerTests
         Assert.Throws<ArgumentException>(() => new RecipeManager([recipe1,recipe2]));
     }
 
+    // FindRecipe() tests
     [Fact]
     public void FindRecipe_ExistingId_ReturnsRecipe()
     {
@@ -84,6 +85,7 @@ public sealed class RecipeManagerTests
         Assert.Null(manager.FindRecipe(999));
     }
     
+    // AddRecipe() tests
     [Fact]
     public void AddRecipe_ValidRecipe_ReturnsTrueAndIncreasesCount()
     {
@@ -103,6 +105,31 @@ public sealed class RecipeManagerTests
         Assert.Equal(2,manager.RecipeCount);
         var correct = manager.FindRecipe(10);
         Assert.Equal("Recipe A",correct?.Title);
+    }
+
+    [Fact]
+    public void AddRecipe_NonPositiveId_ReturnsFalse()
+    {
+        var recipe1 = new Recipe{Id = -10, Title = "Pancakes"};
+        var manager = CreateManager();
+        Assert.False(manager.AddRecipe(recipe1));
+        Assert.Equal(2,manager.RecipeCount);
+    }
+
+    [Fact]
+    public void AddRecipe_EmptyTitle_ReturnsFalse()
+    {
+        var recipe1 = new Recipe{Id = 99, Title = ""};
+        var manager = CreateManager();
+        Assert.False(manager.AddRecipe(recipe1));
+        Assert.Equal(2,manager.RecipeCount);
+    }
+
+    [Fact]
+    public void AddRecipe_NullRecipe_ThrowsArgumentNullException()
+    {
+        var manager = CreateManager();
+        Assert.Throws<ArgumentNullException>(() => manager.AddRecipe(null!));
     }
     private static RecipeManager CreateManager()
     {
