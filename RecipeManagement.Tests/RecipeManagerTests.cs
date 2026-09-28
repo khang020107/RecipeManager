@@ -73,6 +73,7 @@ public sealed class RecipeManagerTests
     {
         var manager = CreateManager();
         Assert.NotNull(manager.FindRecipe(10));
+        Assert.Equal("Recipe A", manager.FindRecipe(10)?.Title);
     }
 
     [Fact]
