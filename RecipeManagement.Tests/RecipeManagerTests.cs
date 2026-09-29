@@ -337,6 +337,31 @@ public sealed class RecipeManagerTests
         manager.AddRecipeToCookingPlan(20);
         Assert.Equal([10], cooking);
     }
+
+    //Start cooking test
+    [Fact]
+    public void StartCooking_ExistingRecipeWithInstructions_LoadsQueueInOrder()
+    {
+        var manager = CreateManager();
+        Assert.True(manager.StartCooking(10));
+        Assert.Equal(2,manager.PendingInstructionCount);
+    }
+
+    [Fact]
+    public void StartCooking_MissingRecipe_ReturnsFalse()
+    {
+        var manager = CreateManager();
+        Assert.False(manager.StartCooking(992));
+        Assert.Equal(0,manager.PendingInstructionCount);
+    }
+
+    [Fact]
+    public void StartCooking_RecipeWithNoInstructions_ReturnsFalse()
+    {
+        var manager = CreateManager();
+        Assert.False(manager.StartCooking(20));
+        Assert.Equal(0,manager.PendingInstructionCount);
+    }
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]
