@@ -283,6 +283,25 @@ public sealed class RecipeManagerTests
         Assert.Equal(2,manager.RemovedRecipeCount);
 
     }
+    // RestoreLastRemoveRecipe tests
+    [Fact]
+    public void RestoreLastRemovedRecipe_EmptyHistory_ReturnsFalse()
+    {
+        var manager = CreateManager();
+        Assert.False(manager.RestoreLastRemovedRecipe());
+    }
+
+    [Fact]
+    public void RestoreLastRemovedRecipe_RestoresLastRemovedRecipe()
+    {
+        var manager = CreateManager();
+        manager.AddRecipeToCookingPlan(10);
+        manager.RemoveRecipeFromCookingPlan(10);
+
+        Assert.True(manager.RestoreLastRemovedRecipe());
+        Assert.Equal(1,manager.CookingPlanCount);
+        Assert.Equal(0,manager.RemovedRecipeCount);
+    }
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]
