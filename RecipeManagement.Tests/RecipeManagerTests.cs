@@ -160,7 +160,7 @@ public sealed class RecipeManagerTests
         var addedCount = manager.AddIngredientsToShoppingList(10);
         Assert.Equal(1, addedCount);
         Assert.Equal(1, manager.ShoppingItemCount);
-        //Assert.Equal(["1 apple"], manager.GetShoppingList());
+        Assert.Equal(["1 apple"], manager.GetShoppingList());
     }
 
     [Fact]
@@ -170,7 +170,7 @@ public sealed class RecipeManagerTests
         var addedCount = manager.AddIngredientsToShoppingList(999);
         Assert.Equal(0, addedCount);
         Assert.Equal(0, manager.ShoppingItemCount);
-        //Assert.Empty(manager.GetShoppingList());
+        Assert.Empty(manager.GetShoppingList());
     }
 
     [Fact]
@@ -180,7 +180,7 @@ public sealed class RecipeManagerTests
         var addedCount = manager.AddIngredientsToShoppingList(20);
         Assert.Equal(0, addedCount);
         Assert.Equal(0, manager.ShoppingItemCount);
-        //Assert.Empty(manager.GetShoppingList());
+        Assert.Empty(manager.GetShoppingList());
     }
 
     [Fact]
@@ -297,9 +297,24 @@ public sealed class RecipeManagerTests
         var manager = CreateManager();
         manager.AddRecipeToCookingPlan(10);
         manager.RemoveRecipeFromCookingPlan(10);
-
         Assert.True(manager.RestoreLastRemovedRecipe());
         Assert.Equal(1,manager.CookingPlanCount);
+        Assert.Equal(0,manager.RemovedRecipeCount);
+    }
+    
+    /*
+    RestoreLastRemovedRecipe pops the ID before checking eligibility, matching the order described in the spec. 
+    If restoration fails, the ID is not returned to the stack.
+    */
+    [Fact]
+    public void RestoreLastRemovedRecipe_RecipeDeletedFromCatalogue_FailsAndDoesNotReturnIdToStack()
+    {
+        var manager = CreateManager();
+        manager.AddRecipeToCookingPlan(10);
+        manager.RemoveRecipeFromCookingPlan(10);
+        manager.RemoveRecipe(10);
+        Assert.False(manager.RestoreLastRemovedRecipe());
+        Assert.Equal(0,manager.CookingPlanCount);
         Assert.Equal(0,manager.RemovedRecipeCount);
     }
     private static RecipeManager CreateManager()
