@@ -54,6 +54,8 @@ public sealed class RecipeManager : IRecipeManager
 
     public bool RemoveRecipe(int recipeId)
     {
+        if(FindRecipe(recipeId) == null) return false;
+        if(_cookingPlan.Contains(recipeId)) return false;
         return _recipes.Remove(recipeId);
     }
 

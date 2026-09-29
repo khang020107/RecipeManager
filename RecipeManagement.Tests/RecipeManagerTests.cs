@@ -152,6 +152,15 @@ public sealed class RecipeManagerTests
         Assert.Equal(2,manager.RecipeCount);
     }
 
+    [Fact]
+    public void RemoveRecipe_RecipeInCookingPlan_ReturnsFalseAndDoesNotRemove()
+    {
+        var manager = CreateManager();
+        manager.AddRecipeToCookingPlan(10);
+        Assert.False(manager.RemoveRecipe(10));
+        Assert.Equal(2, manager.RecipeCount);          
+        Assert.NotNull(manager.FindRecipe(10)); 
+    }
     // AddIngredient to shoppinglist tests
     [Fact]
     public void AddIngredientsToShoppingList_ExistingRecipe_AddsIngredients()
