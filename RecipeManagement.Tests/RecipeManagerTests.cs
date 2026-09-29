@@ -317,6 +317,26 @@ public sealed class RecipeManagerTests
         Assert.Equal(0,manager.CookingPlanCount);
         Assert.Equal(0,manager.RemovedRecipeCount);
     }
+
+    // GetCookingPlan tests
+    [Fact]
+    public void GetCookingPlan_ReturnsIdsInOrder()
+    {
+        var manager = CreateManager();
+        manager.AddRecipeToCookingPlan(10);
+        manager.AddRecipeToCookingPlan(20);
+        Assert.Equal([10,20],manager.GetCookingPlan());
+    }
+
+    [Fact]
+    public void GetCookingPlan_ModifyingResult_DoesNotAffectInternalPlan()
+    {
+        var manager = CreateManager();
+        manager.AddRecipeToCookingPlan(10);
+        var cooking = manager.GetCookingPlan();
+        manager.AddRecipeToCookingPlan(20);
+        Assert.Equal([10], cooking);
+    }
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]

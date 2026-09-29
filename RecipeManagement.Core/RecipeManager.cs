@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.VisualBasic;
-
+using System.Linq;
 namespace RecipeManagement.Core;
 
 /// <summary>
@@ -102,8 +102,10 @@ public sealed class RecipeManager : IRecipeManager
         if(_removedRecipeHistory.Count == 0) return null;
         return _removedRecipeHistory.Peek(); 
     }
-    public IReadOnlyList<int> GetCookingPlan() =>
-        throw new NotImplementedException("Part A: implement GetCookingPlan.");
+    public IReadOnlyList<int> GetCookingPlan()
+    {
+        return _cookingPlan.ToList();
+    }
 
     public bool StartCooking(int recipeId) =>
         throw new NotImplementedException("Part A: implement StartCooking.");
