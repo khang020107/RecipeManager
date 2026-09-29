@@ -120,11 +120,17 @@ public sealed class RecipeManager : IRecipeManager
         return true;
     }
 
-    public string? PeekNextInstruction() =>
-        throw new NotImplementedException("Part A: implement PeekNextInstruction.");
+    public string? PeekNextInstruction()
+    {
+        if(_instructionQueue.Count == 0) return null;
+        return _instructionQueue.Peek();
+    }
 
-    public string? CompleteNextInstruction() =>
-        throw new NotImplementedException("Part A: implement CompleteNextInstruction.");
+    public string? CompleteNextInstruction()
+    {
+        if(_instructionQueue.Count == 0) return null;
+        return _instructionQueue.Dequeue();
+    }
 
     public IReadOnlyList<Recipe> SearchByTitle(string searchText) =>
         throw new NotImplementedException("Part B: implement SearchByTitle.");

@@ -345,6 +345,7 @@ public sealed class RecipeManagerTests
         var manager = CreateManager();
         Assert.True(manager.StartCooking(10));
         Assert.Equal(2,manager.PendingInstructionCount);
+        Assert.Equal("First step", manager.PeekNextInstruction());
     }
 
     [Fact]
@@ -361,6 +362,42 @@ public sealed class RecipeManagerTests
         var manager = CreateManager();
         Assert.False(manager.StartCooking(20));
         Assert.Equal(0,manager.PendingInstructionCount);
+    }
+
+    // Peek and Complete next instruction tests
+    [Fact]
+    public void PeekNextInstruction_EmptyQueue_ReturnsNull()
+    {
+        var manager = CreateManager();
+        Assert.Null(manager.PeekNextInstruction());
+    }
+    
+    [Fact]
+    public void PeekNextInstruction_DoesNotRemoveItem()
+    {
+        var manager = CreateManager();
+        manager.StartCooking(10);
+        var value1 = manager.PeekNextInstruction();
+        var value2 = manager.PeekNextInstruction();
+        Assert.Equal(value1,value2);
+        Assert.Equal(2,manager.PendingInstructionCount);
+    }
+
+    [Fact]
+    public void CompleteNextInstruction_EmptyQueue_ReturnsNull()
+    {
+        var manager = CreateManager();
+        Assert.Null(manager.CompleteNextInstruction());
+    }
+
+    [Fact]
+    public void CompleteNextInstruction_RemovesExactlyOneItemFromFront()
+    {
+        var manager = CreateManager();
+        manager.StartCooking(10);
+        Assert.Equal("First step",manager.CompleteNextInstruction());
+        Assert.Equal(1,manager.PendingInstructionCount);
+        Assert.Equal("Second step",manager.PeekNextInstruction());
     }
     private static RecipeManager CreateManager()
     {
