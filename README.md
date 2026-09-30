@@ -21,6 +21,14 @@ Starter repository for Parts A and B. Implement `RecipeManager` in Core; the App
 - `Stack<int>`
 - `Queue<string>`
 
+### Part A design notes
+
+`RestoreLastRemovedRecipe` pops the ID from the removed-recipe stack
+before checking whether the recipe still exists and is not already
+planned, matching the order described in the spec ("pop the most
+recently removed ID and append it... if..."). If restoration fails,
+the ID is not returned to the stack.
+
 **Part B** — LINQ searches, protein report, saved-recipe collection, `Design.md`, and more tests.
 
 ## Build and run
@@ -37,4 +45,4 @@ Until you implement `RecipeManager`, menu options print a **Not implemented** me
 
 ## AI acknowledgement
 
-Include the required AI acknowledgement statement in your submission as described in the assignment specification.
+- I used Claude to help me understand Dictionary key lookup, encapsulation with IReadOnlyList, xUnit Assert.Throws, logic thinking and step by step guide to write tests that cover all conditions of the function. I did not copy or adapt AI-generated code or other material into my submission. I developed the submitted solution myself based on my understanding on the course material.
