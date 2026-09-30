@@ -408,6 +408,24 @@ public sealed class RecipeManagerTests
         Assert.Equal(1,manager.PendingInstructionCount);
         Assert.Equal("Second step",manager.PeekNextInstruction());
     }
+
+    // T5: Test for interaction between 2 components Dictionary and Queue
+    [Fact]
+    public void AddRecipeThenStartCooking_LoadsInstructionsFromNewlyAddedRecipe()
+    {
+        var manager = CreateManager();
+        var newRecipe = new Recipe
+        {
+            Id = 30,
+            Title = "Recipe C",
+            Ingredients = new() {"1 apple", "2 coconut"},
+            Instructions = new() { "Wash", "Chop", "Mix"}
+        };
+        Assert.True(manager.AddRecipe(newRecipe));
+        Assert.True(manager.StartCooking(30));
+        Assert.Equal(3,manager.PendingInstructionCount);
+        Assert.Equal("Wash",manager.PeekNextInstruction());
+    }
     private static RecipeManager CreateManager()
     {
         return new RecipeManager(new[]
